@@ -1,5 +1,6 @@
 problems/*
-myenv.py
+mypass.py
 *.ipynb
+__pychche__
 solutions/zig-cache/*
 solutions/zig-out/*
