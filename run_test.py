@@ -23,18 +23,17 @@ def test_all_and_compare(task_id: str):
             output = f.read()
         assert output is not None
         run_single_test(task_id,input_path, output)
+
         print(f"Task {num}/{len(test_nums)} passed!")
 
 
 def run_single_test(task_id:str,input_path: str, out: str):
     result = subprocess.run(
         ["zig", "run", f"./solutions/src/{task_id}.zig", "--", input_path],
-        # shell=True,
         capture_output=True,
         text=True,
     )
-    # print(f"{result.stdout=}, {out=}")
-    assert result.stdout == out.strip()
+    assert result.stdout == out
 
 
 if __name__ == "__main__":
