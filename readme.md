@@ -1,4 +1,4 @@
-Learning Zig by solving algorithm using CSES Problem Set
+Learning Zig by solving algorithm problem using CSES Problem Set
 I know this website from https://matklad.github.io/2023/08/06/fantastic-learning-resources.html
 And find it support test as seperate file, So I can just download and test it locally with Zig.
 # Prerequisites
