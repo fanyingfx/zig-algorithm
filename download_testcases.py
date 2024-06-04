@@ -4,7 +4,7 @@ import io
 import sys
 import zipfile
 from bs4 import BeautifulSoup
-from myenv import username, password
+from mypass import nick_name, password
 
 
 def download_tests(task_id):
@@ -19,7 +19,7 @@ def download_tests(task_id):
 
     login_soup = BeautifulSoup(login_page.content, "html.parser")
     csrf_token = login_soup.find("input", {"name": "csrf_token"})["value"]
-    payload = {"csrf_token": csrf_token, "nick": username, "pass": password}
+    payload = {"csrf_token": csrf_token, "nick": nick_name, "pass": password}
     login_result = client.post(LOGIN_URL, data=payload)
     assert login_result.status_code == 200
 
@@ -32,7 +32,7 @@ def download_tests(task_id):
     assert res.status_code == 200
 
     zip_data = io.BytesIO(res.content)
-    extract_dir = f"{task_id}"
+    extract_dir = f"problems/{task_id}"
     with zipfile.ZipFile(zip_data, "r") as zip_ref:
         zip_ref.extractall(extract_dir)
 
