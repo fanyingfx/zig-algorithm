@@ -1,0 +1,5 @@
+problems/*
+myenv.py
+*.ipynb
+solutions/zig-cache/*
+solutions/zig-out/*
