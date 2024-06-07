@@ -1,6 +1,7 @@
 const std = @import("std");
 const Allocator = std.mem.Allocator;
-pub fn run(comptime f: fn (allocator: Allocator, str: []u8) []u8) !void {
+pub const RunFunctionError = error{ OutOfMemory, Overflow, InvalidCharacter };
+pub fn run(comptime f: fn (allocator: Allocator, str: []u8) RunFunctionError![]u8) !void {
     // read command line parameters
     // https://ziggit.dev/t/read-command-line-arguments/220
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -24,7 +25,7 @@ pub fn run(comptime f: fn (allocator: Allocator, str: []u8) []u8) !void {
     const stat = try file.stat();
     const input_file_buff = try file.readToEndAlloc(allocator, stat.size);
     defer allocator.free(input_file_buff);
-    const res = f(allocator, input_file_buff);
+    const res = try f(allocator, input_file_buff);
     defer allocator.free(res);
     try stdout.print("{s}", .{res});
 }
