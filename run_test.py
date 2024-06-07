@@ -28,12 +28,15 @@ def test_all_and_compare(task_id: str):
 
 
 def run_single_test(task_id:str,input_path: str, out: str):
+    zig_file_name=next(f for f in os.listdir("./solutions/src") if f.startswith(task_id))
     result = subprocess.run(
-        ["zig", "run", f"./solutions/src/{task_id}.zig", "--", input_path],
+        ["zig", "run", f"./solutions/src/{zig_file_name}", "--", input_path],
         capture_output=True,
         text=True,
     )
-    assert result.stdout == out
+    if result.stdout != out:
+        print(f"{result.stdout=}, {out=}")
+        raise AssertionError("output not equal!")
 
 
 if __name__ == "__main__":

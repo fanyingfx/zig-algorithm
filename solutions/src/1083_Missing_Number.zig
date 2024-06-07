@@ -1,11 +1,8 @@
 const std = @import("std");
-const tools = @import("tools.zig");
-pub fn find_number(arg: []u8) void {
+const io_helper = @import("tools.zig");
+const Allocator = std.mem.Allocator;
+pub fn slove(allocator: Allocator, arg: []u8) []u8 {
     std.debug.print("arg_input {s}\n", .{arg});
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    const allocator = gpa.allocator();
-    defer _ = gpa.deinit();
-    const stdout = std.io.getStdOut().writer();
     var it = std.mem.split(u8, arg, "\n");
     const count = std.fmt.parseInt(usize, it.next().?, 10) catch unreachable;
     var numbers_it = std.mem.split(u8, it.next().?, " ");
@@ -17,11 +14,13 @@ pub fn find_number(arg: []u8) void {
         slice[number - 1] = true;
     }
     for (slice, 0..) |status, num| {
-        if (!status)
-            stdout.print("{}\n", .{num + 1}) catch unreachable;
+        if (!status) {
+            const res_num = std.fmt.allocPrint(allocator, "{}\n", .{num + 1}) catch unreachable;
+            return res_num;
+        }
     }
-
+    unreachable;
 }
 pub fn main() !void {
-    try tools.run(find_number);
+    try io_helper.run(slove);
 }

@@ -1,6 +1,6 @@
 problems/*
 mypass.py
 *.ipynb
-__pychche__
-solutions/zig-cache/*
+__pycache__
+solutions/.zig-cache/*
 solutions/zig-out/*

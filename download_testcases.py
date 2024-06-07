@@ -1,10 +1,10 @@
-# %%
 import requests
 import io
 import sys
 import zipfile
 from bs4 import BeautifulSoup
 from mypass import nick_name, password
+import shutil
 
 
 def download_tests(task_id):
@@ -27,6 +27,7 @@ def download_tests(task_id):
     test_page = client.get(TEST_URL)
     test_soup = BeautifulSoup(test_page.content, "html.parser")
     csrf_token = test_soup.find("input", {"name": "csrf_token"})["value"]
+    title=test_soup.find('h1').text.replace(" ","_")
     payload = {"csrf_token": csrf_token, "download": "true"}
     res = client.post(TEST_URL, data=payload)
     assert res.status_code == 200
@@ -35,6 +36,7 @@ def download_tests(task_id):
     extract_dir = f"problems/{task_id}"
     with zipfile.ZipFile(zip_data, "r") as zip_ref:
         zip_ref.extractall(extract_dir)
+    shutil.copy("./solutions/src/template.zig",f"./solutions/src/{task_id}_{title}.zig")
 
 
 if __name__ == "__main__":
